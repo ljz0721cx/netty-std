@@ -10,9 +10,10 @@ import io.netty.handler.logging.LoggingHandler;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by lijianzhen1 on 2018/12/28.
+ * Created by lijianzhen1 on 2019/1/8.
  */
-public class InitNettyPool {
+public class InitNettyPoolError {
+
     public static void main(String[] args) throws InterruptedException {
         TimeUnit.SECONDS.sleep(3);
         initClientPool(Integer.valueOf(args[0]));
@@ -37,6 +38,11 @@ public class InitNettyPool {
                 });
         for (int i = 0; i < poolSize; i++) {
             ChannelFuture sync = bootstrap.connect("61.135.169.125", 80).sync();
+            //FIXME 销毁Channel所使用的NioEventLoop和所在的线程组EventLoopGroup，这样的销毁是有问题的
+            sync.channel().closeFuture().addListener((r) -> {
+                System.out.println("执行shutdown");
+                group.shutdownGracefully();
+            });
         }
     }
 }
