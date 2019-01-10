@@ -26,7 +26,7 @@ public class RouterServer {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline pipeline = ch.pipeline();
-                            pipeline.addLast(new LoggingHandler());
+                            pipeline.addLast(new RouterServerHandler());
                         }
                     });
 
@@ -36,7 +36,6 @@ public class RouterServer {
             //阻塞知道服务关闭
             f.channel().closeFuture().sync();
         } finally {
-
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
         }
