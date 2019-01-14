@@ -1,6 +1,5 @@
 package com.janle.std.cases.shutdowns;
 
-import com.sun.istack.internal.logging.Logger;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -9,12 +8,14 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.handler.logging.LogLevel;
 import io.netty.handler.logging.LoggingHandler;
 
+import java.util.logging.Logger;
+
 /**
  * 程序意外退出现象
  * Created by lijianzhen1 on 2018/12/25.
  */
 public class ExitServer {
-    static Logger logger = Logger.getLogger(ExitServer.class);
+    static Logger logger = Logger.getLogger("ExitServer");
 
     public static void main(String[] args) throws InterruptedException {
 
