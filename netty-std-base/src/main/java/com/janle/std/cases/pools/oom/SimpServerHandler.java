@@ -3,26 +3,22 @@ package com.janle.std.cases.pools.oom;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.PooledByteBufAllocator;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.ReferenceCountUtil;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
- * 使用
- * Created by lijianzhen1 on 2019/1/8.
+ * Created by lijianzhen1 on 2019/1/15.
  */
-public class RouterServerHandler extends ChannelInboundHandlerAdapter {
+public class SimpServerHandler extends SimpleChannelInboundHandler<ByteBuf> {
     static ExecutorService executorService = Executors.newSingleThreadExecutor();
     PooledByteBufAllocator allocator = new PooledByteBufAllocator(false);
-
-
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg) throws Exception {
+    protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         ByteBuf regMsg = (ByteBuf) msg;
-        byte[] body = new byte[regMsg.readableBytes()];
-        ReferenceCountUtil.release(regMsg);
+        byte[] body = new byte[msg.readableBytes()];
         executorService.execute(new Runnable() {
             @Override
             public void run() {
@@ -33,12 +29,5 @@ public class RouterServerHandler extends ChannelInboundHandlerAdapter {
                 //ctx.fireChannelRead(msg);
             }
         });
-
-    }
-
-    @Override
-    public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) throws Exception {
-        cause.printStackTrace();
-        ctx.close();
     }
 }
