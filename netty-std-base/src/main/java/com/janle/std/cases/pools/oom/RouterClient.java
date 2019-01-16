@@ -7,6 +7,8 @@ import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
 
 /**
+ * 测试时候的配置
+ * -XX:MetaspaceSize=8m -XX:MaxMetaspaceSize=60m -Xmx50m  -XX:+UnlockExperimentalVMOptions -XX:+UseG1GC -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails
  * Created by lijianzhen1 on 2019/1/9.
  */
 public class RouterClient {

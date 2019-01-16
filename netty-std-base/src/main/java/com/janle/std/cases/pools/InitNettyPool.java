@@ -10,6 +10,8 @@ import io.netty.handler.logging.LoggingHandler;
 import java.util.concurrent.TimeUnit;
 
 /**
+ * 测试时候的配置
+ * -XX:MetaspaceSize=8m -XX:MaxMetaspaceSize=60m -Xmx50m  -XX:+UnlockExperimentalVMOptions -XX:+UseConcMarkSweepGC -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails
  * Created by lijianzhen1 on 2018/12/28.
  */
 public class InitNettyPool {

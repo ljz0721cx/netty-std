@@ -11,6 +11,9 @@ import io.netty.handler.logging.LoggingHandler;
 /**
  *  -XX:MaxDirectMemorySize=200m
  * 服务端
+ *
+ * 测试时候的配置
+ * -XX:MetaspaceSize=8m -XX:MaxMetaspaceSize=60m -XX:+UseConcMarkSweepGC -verbose:gc -XX:+PrintGCTimeStamps -XX:+PrintGCDetails
  * Created by lijianzhen1 on 2019/1/8.
  */
 public class RouterServer {
