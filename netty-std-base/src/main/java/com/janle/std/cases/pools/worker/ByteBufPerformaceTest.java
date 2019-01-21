@@ -8,6 +8,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * -XX:+UseParallelGC -XX:ParallelGCThreads=1 -Xms512m -Xms512m -Xmx1024m -XX:+PrintGCDetails -XX:+PrintHeapAtGC
  * Created by lijianzhen1 on 2019/1/15.
  */
 public class ByteBufPerformaceTest {
@@ -17,7 +18,7 @@ public class ByteBufPerformaceTest {
         //poolTest();//Execute 100000000 times cost time : 11541
 
         //测试JVM收集器使用 可能不长使用过段时间就不记得了 https://blog.csdn.net/u013642886/article/details/86497130
-        //oldGenTest();
+        oldGenTest();
     }
 
 
