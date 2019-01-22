@@ -19,6 +19,8 @@ public class DefaultJdk8GcTest {
         //testMinorGC();
 
         testFullGCOldGenLessEden();
+
+        Obj _8m0 = new Obj(_1M * 1, "-8m");
     }
 
     /**
@@ -43,17 +45,19 @@ public class DefaultJdk8GcTest {
 
     /**
      * 老年代回收
-     * 1.初始化申请超过最大的堆内存，会发生oom，
+     * 1.初始化申请超过最大的堆内存，会发生oom。
      * 2.如果没有超过eden大小，大于from和to的内存大小，并且老年代内存不足，执行fullgc。
+     * 3.方法执行内申请的内存，只能在年轻代回收，方法栈退出后才能释放老年代数据，可以看到可达性分析有基于方法栈的。
+     * 4.yuonggc可以回收方法内的申请的内存。
      */
     private static void testFullGCOldGenLessEden(){
         Obj _8m0 = new Obj(_1M * 8, "-8m");
         Obj _8m1 = new Obj(_1M * 8, "-8m");
         Obj _4m2 = new Obj(_1M * 4, "-4m");
         //_4m2=null;
-        Obj _4m3 = new Obj(_1M * 2, "-2m");
+        Obj _4m3 = new Obj(_1M * 3, "-3m");
         for (int i = 0; i < 10; i++) {
-            Obj _1m0 = new Obj(_1M * 2, "-2m");
+            Obj _1m0 = new Obj(_1M * 3, "-2m");
         }
         Obj _1m0 = new Obj(_1M * 3, "-3m");
     }
