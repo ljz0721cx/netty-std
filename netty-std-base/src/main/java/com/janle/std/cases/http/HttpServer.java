@@ -11,6 +11,7 @@ import io.netty.handler.codec.http.HttpObjectAggregator;
 import io.netty.handler.codec.http.HttpServerCodec;
 
 /**
+ * 提供http的服务
  * Created by lijianzhen1 on 2019/1/16.
  */
 public class HttpServer {
@@ -33,8 +34,11 @@ public class HttpServer {
                     .childHandler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         protected void initChannel(SocketChannel ch) throws Exception {
+                            //HTTP解码器可能会将一个HTTP请求解析成多个消息对象。
                             ch.pipeline().addLast(new HttpServerCodec());
+                            //HttpObjectAggregator 将多个消息转换为单一的一个FullHttpRequest
                             ch.pipeline().addLast(new HttpObjectAggregator(Short.MAX_VALUE));
+                            //
                             ch.pipeline().addLast(new HttpServerHandler());
                         }
                     });

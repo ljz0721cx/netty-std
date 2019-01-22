@@ -6,6 +6,7 @@ import io.netty.handler.codec.http.FullHttpResponse;
 import io.netty.util.concurrent.DefaultPromise;
 
 /**
+ * 处理http响应参数的的处理Handler
  * Created by lijianzhen1 on 2019/1/16.
  */
 public class HttpClientHandler extends SimpleChannelInboundHandler<FullHttpResponse> {
@@ -17,6 +18,8 @@ public class HttpClientHandler extends SimpleChannelInboundHandler<FullHttpRespo
         if (msg.decoderResult().isFailure())
             throw new Exception("decoder HttpResponse error:" + msg.decoderResult().cause());
         HttpResponse response = new HttpResponse(msg);
+        //这里还没有释放对象
+        System.out.println("response unchannlRead "+ new String(response.body()));
         respPromise.setSuccess(response);
     }
 

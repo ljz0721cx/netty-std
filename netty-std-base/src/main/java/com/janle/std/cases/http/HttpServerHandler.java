@@ -27,6 +27,7 @@ public class HttpServerHandler extends SimpleChannelInboundHandler<FullHttpReque
         System.out.println("Http服务器接收请求：" + request);
 
         ByteBuf body = request.content().copy();
+        //构建响应参数
         FullHttpResponse response = new DefaultFullHttpResponse(HTTP_1_1, HttpResponseStatus.OK, body);
         response.headers().set(HttpHeaderNames.CONTENT_LENGTH, body.readableBytes());
         ctx.writeAndFlush(response).sync();
