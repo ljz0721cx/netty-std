@@ -27,7 +27,8 @@ public class LoadRunnerClient {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
-                            p.addLast(new LoadRunnerClientHandler());
+                            //p.addLast(new LoadRunnerClientHandler());
+                            p.addLast(new LoadRunnerSleepClientHandler());
                         }
                     });
             ChannelFuture f = b.connect(HOST, PORT).sync();
