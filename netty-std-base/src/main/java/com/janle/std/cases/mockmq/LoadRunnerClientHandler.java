@@ -26,13 +26,15 @@ public class LoadRunnerClientHandler extends ChannelInboundHandlerAdapter {
      */
     public LoadRunnerClientHandler() {
         firstMessage = Unpooled.buffer(SIZE);
-        for (int i = 0; i < firstMessage.capacity(); i ++) {
+        for (int i = 0; i < firstMessage.capacity(); i++) {
             firstMessage.writeByte((byte) i);
         }
     }
 
     @Override
     public void channelActive(final ChannelHandlerContext ctx) {
+        //这里限制高水位,如果不限制直接将服务器压垮了
+        ctx.channel().config().setWriteBufferHighWaterMark(10 * 1024 * 1024);
         loadRunner = new Runnable() {
             @Override
             public void run() {
@@ -43,10 +45,15 @@ public class LoadRunnerClientHandler extends ChannelInboundHandlerAdapter {
                 }
                 ByteBuf msg = null;
                 final int len = "Netty OOM Example".getBytes().length;
-                while(true)
-                {
-                    msg = Unpooled.wrappedBuffer("Netty OOM Example".getBytes());
-                    ctx.writeAndFlush(msg);
+                while (true) {
+                    //判断是否越过高水位
+                    if (ctx.channel().isWritable()) {
+                        msg = Unpooled.wrappedBuffer("Netty OOM Example".getBytes());
+                        //这里会有问题
+                        ctx.writeAndFlush(msg);
+                    } else {
+                        //System.out.println("写入队列已经满了对应buffer的大小 :" + ctx.channel().unsafe().outboundBuffer().nioBufferCount());
+                    }
                 }
             }
         };
@@ -54,8 +61,7 @@ public class LoadRunnerClientHandler extends ChannelInboundHandlerAdapter {
     }
 
     @Override
-    public void channelRead(ChannelHandlerContext ctx, Object msg)
-    {
+    public void channelRead(ChannelHandlerContext ctx, Object msg) {
         ReferenceCountUtil.release(msg);
     }
 

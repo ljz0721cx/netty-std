@@ -21,13 +21,13 @@ public class LoadRunnerClient {
             b.group(group)
                     .channel(NioSocketChannel.class)
                     .option(ChannelOption.TCP_NODELAY, true)
+                    //设置请求的高水位
                     .option(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 10 * 1024 * 1024)
                     .handler(new ChannelInitializer<SocketChannel>() {
                         @Override
                         public void initChannel(SocketChannel ch) throws Exception {
                             ChannelPipeline p = ch.pipeline();
                             p.addLast(new LoadRunnerClientHandler());
-
                         }
                     });
             ChannelFuture f = b.connect(HOST, PORT).sync();
@@ -36,5 +36,4 @@ public class LoadRunnerClient {
             group.shutdownGracefully();
         }
     }
-
 }
